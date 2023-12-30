@@ -59,26 +59,26 @@
             </div>
             <div class="card-body p-3">
                 @if (session('status'))
-                <div class="row">
-                    <div class="alert alert-success alert-dismissible text-white" role="alert">
-                        <span class="text-sm">{{ Session::get('status') }}</span>
-                        <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <div class="row">
+                        <div class="alert alert-success alert-dismissible text-white" role="alert">
+                            <span class="text-sm">{{ Session::get('status') }}</span>
+                            <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
                 @endif
                 @if (Session::has('demo'))
-                <div class="row">
-                    <div class="alert alert-danger alert-dismissible text-white" role="alert">
-                        <span class="text-sm">{{ Session::get('demo') }}</span>
-                        <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
-                            aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
+                    <div class="row">
+                        <div class="alert alert-danger alert-dismissible text-white" role="alert">
+                            <span class="text-sm">{{ Session::get('demo') }}</span>
+                            <button type="button" class="btn-close text-lg py-3 opacity-10" data-bs-dismiss="alert"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
                     </div>
-                </div>
                 @endif
                 <form wire:submit.prevent='update'>
                     <div class="row">
@@ -88,7 +88,7 @@
                             <label class="form-label">Email address</label>
                             <input wire:model.lazy="user.email" type="email" class="form-control border border-2 p-2">
                             @error('user.email')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
+                                <p class='text-danger inputerror'>{{ $message }} </p>
                             @enderror
                         </div>
 
@@ -97,7 +97,7 @@
                             <label class="form-label">Name</label>
                             <input wire:model.lazy="user.name" type="text" class="form-control border border-2 p-2">
                             @error('user.name')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
+                                <p class='text-danger inputerror'>{{ $message }} </p>
                             @enderror
                         </div>
 
@@ -106,16 +106,17 @@
                             <label class="form-label">Phone</label>
                             <input wire:model.lazy="user.phone" type="number" class="form-control border border-2 p-2">
                             @error('user.phone')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
+                                <p class='text-danger inputerror'>{{ $message }} </p>
                             @enderror
                         </div>
 
                         <div class="mb-3 col-md-6">
 
                             <label class="form-label">Location</label>
-                            <input wire:model.lazy="user.location" type="text" class="form-control border border-2 p-2">
+                            <input wire:model.lazy="user.location" type="text"
+                                class="form-control border border-2 p-2">
                             @error('user.location')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
+                                <p class='text-danger inputerror'>{{ $message }} </p>
                             @enderror
                         </div>
 
@@ -123,10 +124,9 @@
 
                             <label for="floatingTextarea2">About</label>
                             <textarea wire:model.lazy="user.about" class="form-control border border-2 p-2"
-                                placeholder=" Say something about yourself" id="floatingTextarea2" rows="4"
-                                cols="50"></textarea>
+                                placeholder=" Say something about yourself" id="floatingTextarea2" rows="4" cols="50"></textarea>
                             @error('user.about')
-                            <p class='text-danger inputerror'>{{ $message }} </p>
+                                <p class='text-danger inputerror'>{{ $message }} </p>
                             @enderror
                         </div>
                     </div>

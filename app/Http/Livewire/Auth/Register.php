@@ -11,19 +11,20 @@ class Register extends Component
     public $name ='';
     public $email = '';
     public $password = '';
+    public $role = '';
 
     protected $rules=[
     'name' => 'required|min:3',
-    'email' => 'required|email|unique:users,email',
+    'email' => 'nullable|email',
+    'role' => 'required',
     'password' => 'required|min:5',];
 
 
     public function store(){
-
         $attributes = $this->validate();
-
+        
         $user = User::create($attributes);
-
+        
         auth()->login($user);
         
         return redirect('/dashboard');

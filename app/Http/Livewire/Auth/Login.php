@@ -38,8 +38,16 @@ class Login extends Component
         }
 
         session()->regenerate();
-
-        return redirect('/dashboard');
+        if (auth()->user()->role == 'admin') {
+            return redirect()->route('dashboard');
+        } elseif (auth()->user()->role == 'editor') {
+            return redirect()->route('editor-dashboard');
+        } else{
+            return redirect()->route('photo-dashboard');
+        }
+        
+        
+        
 
     }
 }
