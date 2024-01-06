@@ -21,7 +21,7 @@
                     $bookedTime = \Carbon\Carbon::parse($pipeline->booked_time);
                     
                     // Display the human-readable difference
-                    echo $bookedTime->diffForHumans();
+                    echo $bookedTime->toFormattedDateString();
                     ?>
                 </div>
                 <div class="col-md-4">
@@ -48,13 +48,12 @@
                     @endif
                 </div>
                 <div class="col-md-4">
-                    {{-- @if ($pipeline->editing_status == 'complete')
-                        <div class="alert alert-success text-white" role="alert">
-                            <strong>Success!</strong> pipeline already complete!
-                        </div>
-                    @else
-                        <button wire:click='completeEdit' class="btn btn-sm btn-success">Complete Edit</button>
-                    @endif --}}
+                    @if ($pipeline->editing_status === 'complete')
+                        <button class="btn btn-warning btn-md" wire:click="revert">Request Changes</button>
+                    @endif
+                    @if ($pipeline->editing_status === 'complete' && $pipeline->shoot_status === 'completed')
+                        <button class="btn btn-success btn-md" wire:click="complete">Complete</button>
+                    @endif
                 </div>
 
             </div>

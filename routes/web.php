@@ -22,6 +22,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\EditorDashboard;
 use App\Http\Livewire\Auth\ResetPassword;
 use App\Http\Livewire\Auth\ForgotPassword;
+use App\Http\Livewire\CompletedPipelines;
 use App\Http\Livewire\ExampleLaravel\UserProfile;
 use App\Http\Livewire\ExampleLaravel\UserManagement;
 use App\Http\Livewire\PipelineOverview;
@@ -53,7 +54,6 @@ Route::get('client-booking', ClientBooking::class)->middleware('guest')->name('c
 // Route::get('client-booking',[PipelineController::class,'index']);
 
 Route::get('user-profile', UserProfile::class)->middleware('auth')->name('user-profile');
-Route::get('user-management', UserManagement::class)->middleware('auth')->name('user-management');
 
 Route::group(['middleware' => 'auth'], function () {
     Route::get('billing', Billing::class)->name('billing');
@@ -67,8 +67,10 @@ Route::group(['middleware' => 'auth'], function () {
     
     Route::middleware(['checkUserRole:admin'])->group(function () {
         Route::get('dashboard', Dashboard::class)->name('dashboard');
+        Route::get('user-management', UserManagement::class)->middleware('auth')->name('user-management');
         Route::get('pipeline-overview', PipelineOverview::class)->name('pipeline-overview');
         Route::get('view-pipeline/{id}', ViewPipeline::class)->name('view-pipeline');
+        Route::get('completed-pipelines', CompletedPipelines::class)->name('completed-pipelines');
     });
     
     // editor Routes

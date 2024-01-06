@@ -13,6 +13,7 @@ class ClientBooking extends Component
     public $name;
     public $phone;
     public $venue;
+    public $email;
     public $package;
     public $scheduleDate;
     public $time;
@@ -29,6 +30,7 @@ class ClientBooking extends Component
             'customer_name' => $this->name,
             'phone' => $this->phone,
             'venue' => $this->venue,
+            'email' => $this->email,
             'package' => $this->package,
             'booked_time' => $this->dateTimeBooked,
             'note' => $this->note,
@@ -38,7 +40,8 @@ class ClientBooking extends Component
         // $this->reset();
         // You can add a success message or redirect to another page after submission
         session()->flash('message', 'Booking details submitted successfully!');
-        // $this->payment($pipeline->id);
+        $this->paymentStatus="Pending Confirmation";
+        $this->payment($pipeline->id);
         
     }
     public function payment($id)

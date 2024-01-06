@@ -15,14 +15,19 @@
             <div class="card-body p-3">
                 <form submit.prevent>
                     <div class="row">
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-4">
                             <label class="form-label">Name</label>
                             <input wire:model="name" type="text" placeholder="Enter your name"
                                 class="form-control border border-2 p-2" required>
                         </div>
-                        <div class="mb-3 col-md-6">
+                        <div class="mb-3 col-md-4">
                             <label class="form-label">Phone</label>
-                            <input wire:model="phone" type="number" maxlength="12" placeholder="254727*****"
+                            <input wire:model="phone" type="text" maxlength="12" placeholder="254727*****"
+                                class="form-control border border-2 p-2" required>
+                        </div>
+                        <div class="mb-3 col-md-4">
+                            <label class="form-label">Email</label>
+                            <input wire:model="email" type="email" placeholder="name@email.com"
                                 class="form-control border border-2 p-2" required>
                         </div>
                         <div class="mb-3 col-md-6">
@@ -51,13 +56,15 @@
                             <input wire:model="time" type="time" class="form-control border border-2 p-2"
                                 min="{{ date('H:i', strtotime('now')) }}" required>
                         </div>
-                        <div class="mb-3 col-md-12">
+                        <div class="mb-3 col-md-6">
                             <label for="floatingTextarea2">Note</label>
                             <textarea wire:model="note" class="form-control border border-2 p-2"
-                                placeholder="Any extra information for your booking" id="floatingTextarea2" rows="4"></textarea>
+                                placeholder="Any extra information for your booking" id="floatingTextarea2" rows="2"></textarea>
+                        </div>
+                        <div class="mb-3 col-md-6">
+                            <button type="submit" class="btn m-3 bg-gradient-dark" wire:click="save">Book!</button>
                         </div>
                     </div>
-                    <button type="submit" class="btn bg-gradient-dark" wire:click="save">Submit</button>
                 </form>
                 @if ($paymentStatus != null)
                     <div class="alert alert-success alert-dismissible text-white" role="alert">
