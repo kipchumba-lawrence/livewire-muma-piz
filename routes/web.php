@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PipelineController;
 use App\Http\Livewire\RTL;
 use App\Http\Livewire\Tables;
 use App\Http\Livewire\Billing;
@@ -49,6 +50,7 @@ Route::get('reset-password/{id}', ResetPassword::class)->middleware('signed')->n
 Route::get('sign-in', Login::class)->middleware('guest')->name('login');
 Route::get('sign-up', Register::class)->middleware('guest')->name('register');
 Route::get('client-booking', ClientBooking::class)->middleware('guest')->name('client-booking');
+// Route::get('client-booking',[PipelineController::class,'index']);
 
 Route::get('user-profile', UserProfile::class)->middleware('auth')->name('user-profile');
 Route::get('user-management', UserManagement::class)->middleware('auth')->name('user-management');

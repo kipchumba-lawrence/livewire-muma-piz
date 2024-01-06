@@ -30,7 +30,7 @@ class ClientBooking extends Component
             'phone' => $this->phone,
             'venue' => $this->venue,
             'package' => $this->package,
-            'schedule_date' => $this->dateTimeBooked,
+            'booked_time' => $this->dateTimeBooked,
             'note' => $this->note,
         ]);
 
@@ -38,7 +38,7 @@ class ClientBooking extends Component
         // $this->reset();
         // You can add a success message or redirect to another page after submission
         session()->flash('message', 'Booking details submitted successfully!');
-        $this->payment($pipeline->id);
+        // $this->payment($pipeline->id);
         
     }
     public function payment($id)
@@ -47,7 +47,7 @@ class ClientBooking extends Component
         $url = "https://www.tinypesa.com/api/v1/express/initialize";
         $data = array(
             'amount' => 1,
-            'msisdn' => 2547277530214,
+            'msisdn' => 254727750214,
             'account_no' => $id,
         );
         $headers = array(

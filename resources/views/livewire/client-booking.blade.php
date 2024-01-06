@@ -28,6 +28,7 @@
                         <div class="mb-3 col-md-6">
                             <label class="form-label">Location</label>
                             <select wire:model="venue" class="form-control border border-2 p-2">
+                                <option value="">Select venue</option>
                                 <option value="indoor">Indoor</option>
                                 <option value="outdoor">Outdoor</option>
                             </select>
@@ -35,6 +36,7 @@
                         <div class="mb-3 col-md-6">
                             <label class="form-label">Package</label>
                             <select wire:model="package" class="form-select border border-2 form-control p-2">
+                                <option value="">Select Package</option>
                                 <option value="Custom">Custom</option>
                                 <option value="High-End">High-End</option>
                             </select>
