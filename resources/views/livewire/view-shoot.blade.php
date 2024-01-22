@@ -38,7 +38,7 @@
                         </div>
                     @else
                         <form action="" wire:submit='completeShoot'>
-                            <input type="text" placeholder="Enter pixisit link here" wire:model="pixisit"
+                            <input type="text" placeholder="Enter pixisite link here" wire:model="pixisit"
                                 class="form-control my-3 p-2" required
                                 style="border: solid; border-color: #ba7558;border-radius: 5px; border-width: 1.8px ">
                             <input type="number" class="my-2 p-2 form-control" style="border:solid; border-width: 1px;"

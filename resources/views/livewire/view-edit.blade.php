@@ -23,7 +23,7 @@
                     {{ $shoot->note }}
                     <h5>Number of Pictures</h5>
                     {{ $shoot->numberofpix }}
-                    <h5>Pixisit Link</h5>
+                    <h5>Pixisite Link</h5>
                     <a href="{{ $shoot->image_collection }}" target="_blank"><span class="text-success text-bold">
                             Photo Collection</span></a>
                 </div>

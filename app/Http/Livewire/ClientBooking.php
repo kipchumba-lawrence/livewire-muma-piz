@@ -50,7 +50,7 @@ class ClientBooking extends Component
         $url = "https://www.tinypesa.com/api/v1/express/initialize";
         $data = array(
             'amount' => 1,
-            'msisdn' => 254727750214,
+            'msisdn' => $this->phone,
             'account_no' => $id,
         );
         $headers = array(

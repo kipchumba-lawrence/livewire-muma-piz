@@ -26,8 +26,8 @@
                 </div>
                 <div class="col-md-4">
 
-                    <h5>Phone Number</h5>
-                    {{ $pipeline->phone }}
+                    <h5>Email</h5>
+                    {{ $pipeline->email }}
                     <h5>Note</h5>
                     {{ $pipeline->note }}
                     <h5>Shooting Status</h5>
