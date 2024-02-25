@@ -13,7 +13,7 @@
                 </div>
             </div>
             <div class="card-body p-3">
-                <form submit.prevent>
+                <form>
                     <div class="row">
                         <div class="mb-3 col-md-4">
                             <label class="form-label">Name</label>
