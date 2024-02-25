@@ -21,9 +21,9 @@
                                 class="form-control border border-2 p-2" required>
                         </div>
                         <div class="mb-3 col-md-4">
-                            <label class="form-label">Phone</label>
-                            <input wire:model="phone" type="text" maxlength="12" placeholder="254727*****"
-                                class="form-control border border-2 p-2" required>
+                            <label class="form-label">Phone (07*******)</label>
+                            <input wire:model="phone" type="text" maxlength="10" pattern="[0-9]{10}"
+                                placeholder="0727*****" class="form-control border border-2 p-2" required>
                         </div>
                         <div class="mb-3 col-md-4">
                             <label class="form-label">Email</label>

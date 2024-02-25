@@ -3,6 +3,7 @@ namespace App\Http\Livewire;
 
 use Carbon\Carbon;
 use Livewire\Component;
+use Illuminate\Support\Facades\Http;
 use App\Models\pipeline;
 class ClientBooking extends Component
 {   public $paymentStatus=NULL;
@@ -45,35 +46,15 @@ class ClientBooking extends Component
         
     }
     public function payment($id)
-    {
-        $this->paymentStatus="Pending Confirmation";
-        $url = "https://www.tinypesa.com/api/v1/express/initialize";
-        $data = array(
-            'amount' => 1,
-            'msisdn' => $this->phone,
-            'account_no' => $id,
-        );
-        $headers = array(
-            "Content-Type: application/x-www-form-urlencoded",
-            "ApiKey: c2B0fPWXKHS",
-        );
-    
-        $ch = curl_init($url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_POST, true);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($data));
-        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-    
-        $response = curl_exec($ch);
-        if (curl_errno($ch)) {
-            // Handle cURL error
-            echo 'cURL error: ' . curl_error($ch);
-        }
-    
-        curl_close($ch);
-    
-        // Output the response
-        var_dump($response);
+    {         $response = Http::withHeaders([
+            'Content-Type' => 'application/json',
+            'Authorization' => 'Bearer 8da1f85871050d19015289ffb13552976e466983',
+        ])->post('https://lipia-api.kreativelabske.com/api/request/stk', [
+            'phone' => $this->phone,
+            'amount' => '2',
+        ]);
+        // Handle the checking of the responses 
+        dd($response);
     }
     
 }
