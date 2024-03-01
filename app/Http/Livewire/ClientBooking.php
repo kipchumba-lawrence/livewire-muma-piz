@@ -15,6 +15,7 @@ class ClientBooking extends Component
     public $phone;
     public $venue;
     public $email;
+    public $amount;
     public $package;
     public $scheduleDate;
     public $time;
@@ -23,7 +24,6 @@ class ClientBooking extends Component
 
     public function save()
     {
-
         $this->dateTimeBooked = Carbon::parse("{$this->scheduleDate} {$this->time}");
 
         // Save the booking details to the database using Eloquent
@@ -38,6 +38,11 @@ class ClientBooking extends Component
         ]);
         session()->flash('message', 'Booking details submitted successfully!');
         $this->paymentStatus = "Pending Confirmation";
+        if ($this->venue == "outdoor") {
+            $this->amount = 5000;
+        } else {
+            $this->amount = 2000;
+        }
         $this->payment($pipeline->id);
     }
     public function payment($id)
@@ -47,7 +52,7 @@ class ClientBooking extends Component
             'Authorization' => 'Bearer 8da1f85871050d19015289ffb13552976e466983',
         ])->post('https://lipia-api.kreativelabske.com/api/request/stk', [
             'phone' => $this->phone,
-            'amount' => '2',
+            'amount' => $this->amount,
         ]);
 
         if ($response->successful()) {

@@ -12,10 +12,11 @@ class EditorDashboard extends Component
     {
         return view('livewire.editor-dashboard');
     }
-    public function mount(){
+    public function mount()
+    {
         $this->pending_edits = Pipeline::where('editing_status', 'pending')
-    ->where('shoot_status', 'completed')->where('editor', auth()->user()->id)
-    ->orderBy('booked_time', 'asc')
-    ->get();
+            ->where('shoot_status', 'completed')->where('payment_status', 'paid')->where('editor', auth()->user()->id)
+            ->orderBy('booked_time', 'asc')
+            ->get();
     }
 }

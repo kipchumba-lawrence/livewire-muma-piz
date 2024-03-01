@@ -26,6 +26,7 @@ class ViewShoot extends Component
         $this->shoot->editor = $randomEditorId;
         $this->shoot->image_collection = $this->pixisit;
         $this->shoot->numberofpix=$this->numberofpix;
+        $this->shoot=
         $this->shoot->editstart = Carbon::now();
         $this->shoot->save();
         return redirect()->route('photo-dashboard');

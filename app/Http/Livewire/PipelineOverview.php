@@ -12,7 +12,8 @@ class PipelineOverview extends Component
     {
         return view('livewire.pipeline-overview');
     }
-    public function mount(){
-        $this->pipelines=pipeline::where('pipeline_status','pending')->get();
+    public function mount()
+    {
+        $this->pipelines = pipeline::where('pipeline_status', 'pending')->where("payment_status", 'paid')->get();
     }
 }

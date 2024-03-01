@@ -1,14 +1,15 @@
 <div class="container-fluid px-2 px-md-4">
-    <div class="page-header min-height-300 border-radius-xl mt-4"
-        style="background-image: url('https://images.unsplash.com/photo-1531512073830-ba890ca4eba2?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');">
-        <span class="mask  bg-gradient-primary  opacity-6"></span>
+    <div class="page-header min-height-500 border-radius-xl mt-4"
+        style="background-image: url('https://images.unsplash.com/photo-1617463874381-85b513b3e991?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D');">
+        <img src="{{ asset('assets') }}/img/logos/icon.png" class="img-fluid" alt="">
+        <span class="mask  bg-gradient-primary  opacity-1"></span>
     </div>
     <div class="card card-body mx-3 mx-md-4 mb-5 mt-n9">
         <div class="card card-plain h-100">
             <div class="card-header pb-0 p-3">
                 <div class="row">
                     <div class="col-md-8 d-flex align-items-center">
-                        <h5 class="mb-3">Booking Details</h5>
+                        <h5 class="mb-3">Booking Your Shoot today!</h5>
                     </div>
                 </div>
             </div>
@@ -53,8 +54,7 @@
                         </div>
                         <div class="mb-3 col-md-6">
                             <label class="form-label">Time</label>
-                            <input wire:model="time" type="time" class="form-control border border-2 p-2"
-                                min="{{ date('H:i', strtotime('now')) }}" required>
+                            <input wire:model="time" type="time" class="form-control border border-2 p-2" required>
                         </div>
                         <div class="mb-3 col-md-6">
                             <label for="floatingTextarea2">Note</label>

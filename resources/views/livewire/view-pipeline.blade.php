@@ -30,6 +30,10 @@
                     {{ $pipeline->email }}
                     <h5>Note</h5>
                     {{ $pipeline->note }}
+                    <h5>Amount Paid on Booking</h5>
+                    {{ $pipeline->paid_amount }}
+                    <h5>Total Amount</h5>
+                    {{ $pipeline->total_amount }}
                     <h5>Shooting Status</h5>
                     @if ($pipeline->shoot_status == 'completed')
                         <span class="badge badge-pill bg-gradient-success">Complete</span>
