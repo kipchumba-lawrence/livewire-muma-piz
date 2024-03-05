@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\PipelineController;
 use App\Http\Livewire\RTL;
 use App\Http\Livewire\Tables;
 use App\Http\Livewire\Billing;
@@ -8,9 +7,11 @@ use App\Http\Livewire\Profile;
 use App\Http\Livewire\ViewEdit;
 use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\ViewShoot;
+use App\Http\Controllers\payment;
 use App\Http\Livewire\Auth\Login;
 use App\Http\Livewire\StaticSignIn;
 use App\Http\Livewire\StaticSignUp;
+use App\Http\Livewire\ViewPipeline;
 use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\ClientBooking;
 use App\Http\Livewire\CompleteEdits;
@@ -20,13 +21,12 @@ use App\Http\Livewire\PhotoDashboard;
 use App\Http\Livewire\VirtualReality;
 use Illuminate\Support\Facades\Route;
 use App\Http\Livewire\EditorDashboard;
+use App\Http\Livewire\PipelineOverview;
 use App\Http\Livewire\Auth\ResetPassword;
-use App\Http\Livewire\Auth\ForgotPassword;
 use App\Http\Livewire\CompletedPipelines;
+use App\Http\Livewire\Auth\ForgotPassword;
 use App\Http\Livewire\ExampleLaravel\UserProfile;
 use App\Http\Livewire\ExampleLaravel\UserManagement;
-use App\Http\Livewire\PipelineOverview;
-use App\Http\Livewire\ViewPipeline;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,6 +42,7 @@ use App\Http\Livewire\ViewPipeline;
 Route::get('/', function () {
     return redirect('sign-in');
 });
+Route::get('/payment', [payment::class, 'index'])->name('payment');
 
 Route::get('forgot-password', ForgotPassword::class)->middleware('guest')->name('password.forgot');
 Route::get('reset-password/{id}', ResetPassword::class)->middleware('signed')->name('reset-password');
@@ -64,7 +65,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('static-sign-in', StaticSignIn::class)->name('static-sign-in');
     Route::get('static-sign-up', StaticSignUp::class)->name('static-sign-up');
     Route::get('rtl', RTL::class)->name('rtl');
-    
+
     Route::middleware(['checkUserRole:admin'])->group(function () {
         Route::get('dashboard', Dashboard::class)->name('dashboard');
         Route::get('user-management', UserManagement::class)->middleware('auth')->name('user-management');
@@ -72,14 +73,14 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('view-pipeline/{id}', ViewPipeline::class)->name('view-pipeline');
         Route::get('completed-pipelines', CompletedPipelines::class)->name('completed-pipelines');
     });
-    
+
     // editor Routes
     Route::middleware(['checkUserRole:editor'])->group(function () {
         Route::get('editor-dashboard', EditorDashboard::class)->name('editor-dashboard');
         Route::get('view-edit/{id}', ViewEdit::class)->name('view-edit');
         Route::get('complete-edits', CompleteEdits::class)->name('complete-edits');
     });
-    
+
     // photo Routes
     Route::middleware(['checkUserRole:photo'])->group(function () {
         Route::get('photo-dashboard', PhotoDashboard::class)->name('photo-dashboard');
