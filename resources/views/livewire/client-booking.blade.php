@@ -62,6 +62,24 @@
                                 placeholder="Any extra information for your booking" id="floatingTextarea2" rows="2"></textarea>
                         </div>
                         <div class="mb-3 col-md-6">
+                            <div class="row">
+                                <div class="col">
+                                    Makeup
+                                    <input type="checkbox" name="outfit" wire:model="makeup" id=""
+                                        value="Booked">
+                                </div>
+                                <div class="col">
+                                    Hair
+                                    <input type="checkbox" wire:model="hair" name="hair" id=""
+                                        value="Booked">
+                                </div>
+                                <div class="col">
+                                    Outfit
+                                    <input type="checkbox" name="outfit" wire:model="outfit" id=""
+                                        value="Booked">
+                                </div>
+
+                            </div>
                             <button type="submit" class="btn m-3 bg-gradient-dark" wire:click="save">Book!</button>
                         </div>
                     </div>

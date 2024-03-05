@@ -21,6 +21,9 @@ class ClientBooking extends Component
     public $time;
     public $note;
     public $dateTimeBooked;
+    public $outfit;
+    public $makeup;
+    public $hair;
 
     public function save()
     {
@@ -39,7 +42,7 @@ class ClientBooking extends Component
         session()->flash('message', 'Booking details submitted successfully!');
         $this->paymentStatus = "Pending Confirmation";
         if ($this->venue == "outdoor") {
-            $this->amount = 5000;
+            $this->amount = 1;
         } else {
             $this->amount = 2000;
         }
