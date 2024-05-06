@@ -4,8 +4,9 @@ namespace App\Http\Livewire;
 
 use Carbon\Carbon;
 use Livewire\Component;
-use Illuminate\Support\Facades\Http;
 use App\Models\pipeline;
+use Iankumu\Mpesa\Facades\Mpesa;
+use Illuminate\Support\Facades\Http;
 
 class ClientBooking extends Component
 {
@@ -50,25 +51,9 @@ class ClientBooking extends Component
     }
     public function payment($id)
     {
-        $response = Http::withHeaders([
-            'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer 8da1f85871050d19015289ffb13552976e466983',
-        ])->post('https://lipia-api.kreativelabske.com/api/request/stk', [
-            'phone' => $this->phone,
-            'amount' => $this->amount,
-        ]);
-
-        if ($response->successful()) {
-            $responseData = $response->json(); // Decoding JSON response
-            $amount = $responseData['data']['amount'];
-            $pipeline = pipeline::where('id', $id)->first();
-            $pipeline->update([
-                'payment_status' => 'paid',
-                'paid_amount' => $amount,
-            ]);
-            $this->paymentStatus = "Payment Sucessful.";
-        }
-        $this->paymentStatus = "Payment Unsucessful.";
+        $response = Mpesa::stkpush('0727750214', 1, '4122547', 'https://mumaapix.com');
+        $response = json_decode((string)$response);
+        return $response;
     }
     public function render()
     {

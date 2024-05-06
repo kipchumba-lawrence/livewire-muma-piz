@@ -2,7 +2,7 @@
 
 return [
     //This is the mpesa environment.Can be sanbox or production
-    'environment' => env('MPESA_ENVIRONMENT', 'sandbox'),
+    'environment' => env('MPESA_ENVIRONMENT', 'production'),
 
     /*-----------------------------------------
         |The Mpesa Consumer Key
