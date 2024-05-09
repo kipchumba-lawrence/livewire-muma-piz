@@ -51,9 +51,9 @@ class ClientBooking extends Component
     }
     public function payment($id)
     {
-        $response = Mpesa::stkpush('0727750214', 1, '4122547', 'https://mumaapix.com');
+        $response = Mpesa::stkpush('0727750214', 1, '174379', 'https://mumaapix.com');
         $response = json_decode((string)$response);
-        return $response;
+        dd($response);
     }
     public function render()
     {
