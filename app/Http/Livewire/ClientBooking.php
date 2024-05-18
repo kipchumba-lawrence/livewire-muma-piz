@@ -31,6 +31,7 @@ class ClientBooking extends Component
         $this->dateTimeBooked = Carbon::parse("{$this->scheduleDate} {$this->time}");
 
         // Save the booking details to the database using Eloquent
+        $this->payment();
         $pipeline = pipeline::create([
             'customer_name' => $this->name,
             'phone' => $this->phone,
@@ -47,11 +48,10 @@ class ClientBooking extends Component
         } else {
             $this->amount = 2000;
         }
-        $this->payment($pipeline->id);
     }
-    public function payment($id)
+    public function payment()
     {
-        $response = Mpesa::stkpush('0727750214', 1, '174379', 'https://mumaapix.com');
+        $response = Mpesa::stkpush('0727750214', 1, '4122547', 'https://mumaapix.com');
         $response = json_decode((string)$response);
         dd($response);
     }

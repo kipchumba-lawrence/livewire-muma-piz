@@ -42,7 +42,7 @@ use App\Http\Livewire\ExampleLaravel\UserManagement;
 Route::get('/', function () {
     return redirect('sign-in');
 });
-Route::get('/payment', [payment::class, 'index'])->name('payment');
+Route::get('/payment', [payment::class, 'stkPush'])->name('payment');
 
 Route::get('forgot-password', ForgotPassword::class)->middleware('guest')->name('password.forgot');
 Route::get('reset-password/{id}', ResetPassword::class)->middleware('signed')->name('reset-password');
