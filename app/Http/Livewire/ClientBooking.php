@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\pipeline;
 use Iankumu\Mpesa\Facades\Mpesa;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
 class ClientBooking extends Component
@@ -32,7 +33,19 @@ class ClientBooking extends Component
 
         // Save the booking details to the database using Eloquent
         $this->payment();
-        $pipeline = pipeline::create([
+        session()->flash('message', 'Booking details submitted successfully!');
+        $this->paymentStatus = "Pending Confirmation";
+        if ($this->venue == "outdoor") {
+            $this->amount = 5;
+        } else {
+            $this->amount = 2;
+        }
+    }
+    public function payment()
+    {
+        $response = Mpesa::stkpush($this->phone, 1, '4122547', 'https://mumaapix.com');
+        $response = json_decode((string)$response, true);
+        pipeline::create([
             'customer_name' => $this->name,
             'phone' => $this->phone,
             'venue' => $this->venue,
@@ -40,19 +53,9 @@ class ClientBooking extends Component
             'package' => $this->package,
             'booked_time' => $this->dateTimeBooked,
             'note' => $this->note,
+            'merchant_request_id' =>  $response['MerchantRequestID'],
+            'checkout_request_id' =>  $response['CheckoutRequestID']
         ]);
-        session()->flash('message', 'Booking details submitted successfully!');
-        $this->paymentStatus = "Pending Confirmation";
-        if ($this->venue == "outdoor") {
-            $this->amount = 1;
-        } else {
-            $this->amount = 2000;
-        }
-    }
-    public function payment()
-    {
-        $response = Mpesa::stkpush('0727750214', 1, '174379', 'https://mumaapix.com');
-        $response = json_decode((string)$response);
     }
     public function render()
     {

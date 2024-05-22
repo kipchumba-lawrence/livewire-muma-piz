@@ -25,7 +25,9 @@ class pipeline extends Model
         'editstart',
         'total_amount',
         'numberofpix',
-        'paid_amount'
+        'paid_amount',
+        'checkout_request_id',
+        'merchant_request_id'
     ];
     use HasFactory;
 }

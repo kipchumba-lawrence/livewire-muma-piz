@@ -9,7 +9,7 @@
             <div class="card-header pb-0 p-3">
                 <div class="row">
                     <div class="col-md-8 d-flex align-items-center">
-                        <h5 class="mb-3">Booking Your Shoot today!</h5>
+                        <h5 class="mb-3">Book Your Shoot today!</h5>
                     </div>
                 </div>
             </div>
