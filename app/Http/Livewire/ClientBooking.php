@@ -6,7 +6,6 @@ use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\pipeline;
 use Iankumu\Mpesa\Facades\Mpesa;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Http;
 
 class ClientBooking extends Component
@@ -26,14 +25,18 @@ class ClientBooking extends Component
     public $outfit;
     public $makeup;
     public $hair;
-
+    public function mount()
+    {
+        if (session()->has('paymentStatus')) {
+            $this->paymentStatus = session('paymentStatus');
+        }
+    }
     public function save()
     {
         $this->dateTimeBooked = Carbon::parse("{$this->scheduleDate} {$this->time}");
 
         // Save the booking details to the database using Eloquent
         $this->payment();
-        session()->flash('message', 'Booking details submitted successfully!');
         $this->paymentStatus = "Pending Confirmation";
         if ($this->venue == "outdoor") {
             $this->amount = 5;
@@ -43,7 +46,7 @@ class ClientBooking extends Component
     }
     public function payment()
     {
-        $response = Mpesa::stkpush($this->phone, 1, '4122547', 'https://mumaapix.com');
+        $response = Mpesa::stkpush($this->phone, 1, '4122547', 'https://test.preshamafeedsltd.com/api/payment');
         $response = json_decode((string)$response, true);
         pipeline::create([
             'customer_name' => $this->name,
@@ -53,9 +56,14 @@ class ClientBooking extends Component
             'package' => $this->package,
             'booked_time' => $this->dateTimeBooked,
             'note' => $this->note,
+            'makeup' => $this->makeup,
+            'hair' => $this->hair,
+            'outfit' => $this->outfit,
+            'paid_amount' => $this->amount,
             'merchant_request_id' =>  $response['MerchantRequestID'],
             'checkout_request_id' =>  $response['CheckoutRequestID']
         ]);
+        return redirect()->route('client-booking')->with('paymentStatus', 'Pending Payment Confirmation.');
     }
     public function render()
     {

@@ -16,6 +16,7 @@ use App\Http\Livewire\Auth\Register;
 use App\Http\Livewire\ClientBooking;
 use App\Http\Livewire\CompleteEdits;
 use App\Http\Livewire\Notifications;
+use App\Http\Controllers\landingpage;
 use App\Http\Livewire\CompleteShoots;
 use App\Http\Livewire\PhotoDashboard;
 use App\Http\Livewire\VirtualReality;
@@ -52,7 +53,6 @@ Route::get('reset-password/{id}', ResetPassword::class)->middleware('signed')->n
 Route::get('sign-in', Login::class)->middleware('guest')->name('login');
 Route::get('sign-up', Register::class)->middleware('guest')->name('register');
 Route::get('client-booking', ClientBooking::class)->middleware('guest')->name('client-booking');
-// Route::get('client-booking',[PipelineController::class,'index']);
 
 Route::get('user-profile', UserProfile::class)->middleware('auth')->name('user-profile');
 
@@ -87,4 +87,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('view-shoot/{id}', ViewShoot::class)->name('view-shoot');
         Route::get('complete-shoots', CompleteShoots::class)->name('complete-shoots');
     });
+    Route::get('logout-platform', function () {
+        auth()->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerate();
+        return redirect('sign-in');
+    })->name('logout-platform');
 });

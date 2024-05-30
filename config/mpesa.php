@@ -2,7 +2,7 @@
 
 return [
     //This is the mpesa environment.Can be sanbox or production
-    'environment' => env('MPESA_ENVIRONMENT', 'sandbox'),
+    'environment' => env('MPESA_ENVIRONMENT', 'production'),
 
     /*-----------------------------------------
         |The Mpesa Consumer Key
@@ -20,7 +20,7 @@ return [
         |The Lipa na Mpesa Online Passkey
         |------------------------------------------
         */
-    'passkey' => env('SAFARICOM_PASSKEY', 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'),
+    'passkey' => env('SAFARICOM_PASSKEY', 'ad5a4ea4829f50b0fc507fe12d8207bcd37848a6b30a3872a496b96e7b3578ea'),
 
     /*-----------------------------------------
         |The Lipa na Mpesa Online ShortCode

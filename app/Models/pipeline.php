@@ -27,7 +27,10 @@ class pipeline extends Model
         'numberofpix',
         'paid_amount',
         'checkout_request_id',
-        'merchant_request_id'
+        'merchant_request_id',
+        'hair',
+        'outfit',
+        'makeup'
     ];
     use HasFactory;
 }

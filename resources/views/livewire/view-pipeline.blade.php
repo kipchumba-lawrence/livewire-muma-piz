@@ -32,8 +32,20 @@
                     {{ $pipeline->note }}
                     <h5>Amount Paid on Booking</h5>
                     {{ $pipeline->paid_amount }}
-                    <h5>Total Amount</h5>
-                    {{ $pipeline->total_amount }}
+                    <br>
+                    <h5>Addons</h5>
+                    @if ($pipeline->makeup != null)
+                        Makeup
+                    @endif
+                    @if ($pipeline->outfit != null)
+                        Outfit
+                    @endif
+                    @if ($pipeline->hair != null)
+                        Hair
+                    @endif
+                    @if ($pipeline->makeup == null && $pipeline->outfit == null && $pipeline->hair == null)
+                        No additions
+                    @endif
                     <h5>Shooting Status</h5>
                     @if ($pipeline->shoot_status == 'completed')
                         <span class="badge badge-pill bg-gradient-success">Complete</span>

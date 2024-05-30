@@ -1,0 +1,187 @@
+# ************************************************************
+# Sequel Pro SQL dump
+# Version 4541
+#
+# http://www.sequelpro.com/
+# https://github.com/sequelpro/sequelpro
+#
+# Host: 127.0.0.1 (MySQL 5.5.5-10.4.28-MariaDB)
+# Database: mumapix
+# Generation Time: 2024-05-22 12:07:53 +0000
+# ************************************************************
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+
+# Dump of table failed_jobs
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `failed_jobs`;
+
+CREATE TABLE `failed_jobs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
+  `failed_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+# Dump of table migrations
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `migrations`;
+
+CREATE TABLE `migrations` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `migration` varchar(255) NOT NULL,
+  `batch` int(11) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+LOCK TABLES `migrations` WRITE;
+/*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
+
+INSERT INTO `migrations` (`id`, `migration`, `batch`)
+VALUES
+	(1,'2014_10_12_000000_create_users_table',1),
+	(2,'2014_10_12_100000_create_password_resets_table',1),
+	(3,'2019_08_19_000000_create_failed_jobs_table',1),
+	(4,'2019_12_14_000001_create_personal_access_tokens_table',1),
+	(5,'2023_12_29_165902_create_pipelines_table',2),
+	(6,'2023_12_29_173603_add_role_to_users_table',3),
+	(7,'2023_12_30_204344_add_columns_to_pipeline_table',4),
+	(10,'2023_12_31_005817_make_numberofpix_nullable_in_pipelines_table',5),
+	(11,'2024_01_06_195622_change_booked_time_to_string_in_pipelines_table',6),
+	(12,'2024_01_06_202438_add_email_to_pipelines_table',7),
+	(13,'2024_01_06_203447_add_pipeline_status_to_pipelines_table',8);
+
+/*!40000 ALTER TABLE `migrations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+# Dump of table password_resets
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `password_resets`;
+
+CREATE TABLE `password_resets` (
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  KEY `password_resets_email_index` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+# Dump of table personal_access_tokens
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `personal_access_tokens`;
+
+CREATE TABLE `personal_access_tokens` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `tokenable_type` varchar(255) NOT NULL,
+  `tokenable_id` bigint(20) unsigned NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
+  `last_used_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `personal_access_tokens_token_unique` (`token`),
+  KEY `personal_access_tokens_tokenable_type_tokenable_id_index` (`tokenable_type`,`tokenable_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+# Dump of table pipelines
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `pipelines`;
+
+CREATE TABLE `pipelines` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `customer_name` varchar(255) NOT NULL,
+  `booked_time` varchar(255) NOT NULL,
+  `package` varchar(255) NOT NULL,
+  `venue` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL DEFAULT 'indoor',
+  `note` text DEFAULT NULL,
+  `phone` varchar(255) NOT NULL,
+  `editor` varchar(255) DEFAULT NULL,
+  `editing_status` varchar(255) NOT NULL DEFAULT 'pending',
+  `shoot_status` varchar(255) NOT NULL DEFAULT 'pending',
+  `editstart` timestamp NULL DEFAULT NULL,
+  `numberofpix` int(11) DEFAULT NULL,
+  `image_collection` text DEFAULT NULL,
+  `export_link` varchar(255) DEFAULT NULL,
+  `payment_status` varchar(255) NOT NULL DEFAULT 'pending',
+  `total_amount` int(11) DEFAULT NULL,
+  `paid_amount` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `pipeline_status` varchar(255) NOT NULL DEFAULT 'pending',
+  `makeup` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `hair` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `outfit` varchar(11) DEFAULT NULL,
+  `merchant_request_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci DEFAULT NULL,
+  `checkout_request_id` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+
+
+# Dump of table users
+# ------------------------------------------------------------
+
+DROP TABLE IF EXISTS `users`;
+
+CREATE TABLE `users` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `email_verified_at` timestamp NULL DEFAULT NULL,
+  `phone` varchar(255) DEFAULT NULL,
+  `role` varchar(255) NOT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `about` text DEFAULT NULL,
+  `password` varchar(255) NOT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `users_email_unique` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+
+INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `phone`, `role`, `location`, `about`, `password`, `remember_token`, `created_at`, `updated_at`)
+VALUES
+	(1,'Admin','admin@material.com','2023-12-29 00:16:33',NULL,'photo',NULL,NULL,'$2y$10$OFM3gVicaRsJN4oRILv/jOjfoCa3O2kyh6E1C.Z8S9cVqUE3bCz/W','mQq8qXGp1njMH4USA1r8qYpJUjqEcA44jR8T67U4YqeIe4tUXkLydoAk5tOF','2023-12-29 00:16:33','2023-12-29 00:16:33');
+
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

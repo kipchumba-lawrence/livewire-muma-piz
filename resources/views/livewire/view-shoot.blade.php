@@ -30,6 +30,18 @@
                     {{ $shoot->note }}
                     <h5>Status</h5>
                     {{ $shoot->shoot_status }}
+                    <br>
+                    <Strong>Addons</Strong>
+                    <br>
+                    @if ($shoot->makeup != null)
+                        Makeup
+                    @endif
+                    @if ($shoot->outfit != null)
+                        Outfit
+                    @endif
+                    @if ($shoot->hair != null)
+                        Hair
+                    @endif
                 </div>
                 <div class="col-md-4">
                     @if ($shoot->edit_status == 'completed')
@@ -42,7 +54,8 @@
                                 class="form-control my-3 p-2" required
                                 style="border: solid; border-color: #ba7558;border-radius: 5px; border-width: 1.8px ">
                             <input type="number" class="my-2 p-2 form-control" style="border:solid; border-width: 1px;"
-                                placeholder="Enter number of Pictures Edited" wire:model.lazy='numberofpix' required>
+                                placeholder="Enter number of Pictures To Be Edited" wire:model.lazy='numberofpix'
+                                required>
                             <button type="submit" class="btn btn-sm btn-success">Complete
                                 Shoot</button>
                         </form>

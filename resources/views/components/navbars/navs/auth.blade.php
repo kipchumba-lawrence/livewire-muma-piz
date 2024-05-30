@@ -17,10 +17,11 @@
             </form>
             <span class="text-sm mx-4">Welcome {{ auth()->user()->name }}</span>
             <ul class="navbar-nav  justify-content-end">
-                <li class="nav-item d-flex align-items-center">
-                    <a href="javascript:;" class="nav-link text-body font-weight-bold px-0">
-                        <i class="fa fa-user me-sm-1"></i>
-                        <livewire:auth.logout />
+                <li class="nav-item align-items-center">
+                    {{-- Add anchor tag to logout --}}
+                    <a href="{{ route('logout-platform') }}" class="nav-link text-body font-weight-bold px-0">
+                        <i class="fa fa-user me-sm-2"></i>
+                        {{-- <livewire:auth.logout /> --}}
                     </a>
                 </li>
                 <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
