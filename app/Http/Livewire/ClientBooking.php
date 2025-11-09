@@ -5,12 +5,12 @@ namespace App\Http\Livewire;
 use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\pipeline;
-use Iankumu\Mpesa\Facades\Mpesa;
-use Illuminate\Support\Facades\Http;
+use App\Traits\Loggable;
 
 class ClientBooking extends Component
 {
-    public $paymentStatus = NULL;
+    use Loggable;
+    public $bookingStatus = NULL;
 
     public $name;
     public $phone;
@@ -25,45 +25,94 @@ class ClientBooking extends Component
     public $outfit;
     public $makeup;
     public $hair;
+    
     public function mount()
     {
-        if (session()->has('paymentStatus')) {
-            $this->paymentStatus = session('paymentStatus');
+        if (session()->has('bookingStatus')) {
+            $this->bookingStatus = session('bookingStatus');
         }
     }
+    
     public function save()
     {
-        $this->dateTimeBooked = Carbon::parse("{$this->scheduleDate} {$this->time}");
+        $this->logInfo('Client booking started', [
+            'email' => $this->email,
+            'phone' => $this->phone,
+            'package' => $this->package,
+            'venue' => $this->venue
+        ]);
 
-        // Save the booking details to the database using Eloquent
-        $this->payment();
-        $this->paymentStatus = "Pending Confirmation";
-        if ($this->venue == "outdoor") {
-            $this->amount = 5;
-        } else {
-            $this->amount = 2;
+        try {
+            $this->dateTimeBooked = Carbon::parse("{$this->scheduleDate} {$this->time}");
+
+            // Calculate amount based on venue
+            if ($this->venue == "outdoor") {
+                $this->amount = 5;
+            } else {
+                $this->amount = 2;
+            }
+
+            // Create booking (walk-in, no payment processing)
+            $this->createBooking();
+            $this->bookingStatus = "Booking Confirmed";
+
+            $this->logInfo('Client booking completed successfully', [
+                'email' => $this->email,
+                'amount' => $this->amount,
+                'type' => 'walk-in'
+            ]);
+        } catch (\Exception $e) {
+            $this->logError('Client booking failed', [
+                'email' => $this->email,
+                'error' => $e->getMessage(),
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            throw $e;
         }
     }
-    public function payment()
+    
+    public function createBooking()
     {
-        $response = Mpesa::stkpush($this->phone, 1, '4122547', 'https://test.preshamafeedsltd.com/api/payment');
-        $response = json_decode((string)$response, true);
-        pipeline::create([
-            'customer_name' => $this->name,
-            'phone' => $this->phone,
-            'venue' => $this->venue,
-            'email' => $this->email,
-            'package' => $this->package,
-            'booked_time' => $this->dateTimeBooked,
-            'note' => $this->note,
-            'makeup' => $this->makeup,
-            'hair' => $this->hair,
-            'outfit' => $this->outfit,
-            'paid_amount' => $this->amount,
-            'merchant_request_id' =>  $response['MerchantRequestID'],
-            'checkout_request_id' =>  $response['CheckoutRequestID']
-        ]);
-        return redirect()->route('client-booking')->with('paymentStatus', 'Pending Payment Confirmation.');
+        try {
+            $pipeline = pipeline::create([
+                'customer_name' => $this->name,
+                'phone' => $this->phone,
+                'venue' => $this->venue,
+                'email' => $this->email,
+                'package' => $this->package,
+                'booked_time' => $this->dateTimeBooked,
+                'note' => $this->note,
+                'makeup' => $this->makeup,
+                'hair' => $this->hair,
+                'outfit' => $this->outfit,
+                'paid_amount' => $this->amount,
+                'total_amount' => $this->amount,
+                'payment_status' => 'paid', // Set as paid for walk-in bookings
+                'pipeline_status' => 'pending',
+                'shoot_status' => 'pending',
+                'editing_status' => 'pending'
+            ]);
+
+            $this->logPipelineAction('booking_created', $pipeline->id, [
+                'customer_name' => $this->name,
+                'package' => $this->package,
+                'venue' => $this->venue,
+                'booked_time' => $this->dateTimeBooked,
+                'payment_type' => 'walk-in',
+                'amount' => $this->amount
+            ]);
+
+            return redirect()->route('client-booking')->with('bookingStatus', 'Booking confirmed successfully!');
+        } catch (\Exception $e) {
+            $this->logError('Booking creation failed', [
+                'phone' => $this->phone,
+                'email' => $this->email,
+                'error' => $e->getMessage()
+            ]);
+            
+            throw $e;
+        }
     }
     public function render()
     {

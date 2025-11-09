@@ -49,9 +49,9 @@
                     </div>
                 </div>
             </div>
-            @if ($paymentStatus != null)
+            @if ($bookingStatus != null)
                 <div class="alert alert-success alert-dismissible text-white" role="alert">
-                    {{ $paymentStatus }}
+                    {{ $bookingStatus }}
                 </div>
             @endif
             <div class="card-body p-3">

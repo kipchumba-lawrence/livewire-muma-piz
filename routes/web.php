@@ -43,7 +43,8 @@ use App\Http\Livewire\ExampleLaravel\UserManagement;
 Route::get('/', function () {
     return redirect('sign-in');
 });
-Route::get('/payment', [payment::class, 'stkPush'])->name('payment');
+// M-Pesa payment route - temporarily disabled (under maintenance)
+// Route::get('/payment', [payment::class, 'stkPush'])->name('payment');
 
 Route::get('forgot-password', ForgotPassword::class)->middleware('guest')->name('password.forgot');
 Route::get('reset-password/{id}', ResetPassword::class)->middleware('signed')->name('reset-password');
@@ -72,6 +73,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('pipeline-overview', PipelineOverview::class)->name('pipeline-overview');
         Route::get('view-pipeline/{id}', ViewPipeline::class)->name('view-pipeline');
         Route::get('completed-pipelines', CompletedPipelines::class)->name('completed-pipelines');
+        
+        // Log Viewer - only accessible to admins
+        Route::get('logs', '\Rap2hpoutre\LaravelLogViewer\LogViewerController@index')->name('logs');
     });
 
     // editor Routes
