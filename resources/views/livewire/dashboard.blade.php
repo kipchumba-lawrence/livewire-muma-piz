@@ -12,7 +12,7 @@
                         </div>
                         <div class="text-end pt-1">
                             <p class="text-sm mb-0 text-capitalize">Today's Money</p>
-                            <h4 class="mb-0">$53k</h4>
+                            <h4 class="mb-0">Ksh {{ number_format($todaysMoney) }}</h4>
                         </div>
                     </div>
                     <hr class="dark horizontal my-0">
@@ -30,8 +30,8 @@
                             <i class="material-icons opacity-10">person</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">Today's Users</p>
-                            <h4 class="mb-0">2,300</h4>
+                            <p class="text-sm mb-0 text-capitalize">Total Users</p>
+                            <h4 class="mb-0">{{ $totalUsers }}</h4>
                         </div>
                     </div>
                     <hr class="dark horizontal my-0">
@@ -49,8 +49,8 @@
                             <i class="material-icons opacity-10">person</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">New Clients</p>
-                            <h4 class="mb-0">3,462</h4>
+                            <p class="text-sm mb-0 text-capitalize">New Clients (Today)</p>
+                            <h4 class="mb-0">{{ $newClients }}</h4>
                         </div>
                     </div>
                     <hr class="dark horizontal my-0">
@@ -68,8 +68,8 @@
                             <i class="material-icons opacity-10">weekend</i>
                         </div>
                         <div class="text-end pt-1">
-                            <p class="text-sm mb-0 text-capitalize">Sales</p>
-                            <h4 class="mb-0">$103,430</h4>
+                            <p class="text-sm mb-0 text-capitalize">Total Sales</p>
+                            <h4 class="mb-0">Ksh {{ number_format($totalSales) }}</h4>
                         </div>
                     </div>
                     <hr class="dark horizontal my-0">
@@ -569,7 +569,7 @@
         new Chart(ctx, {
             type: "bar",
             data: {
-                labels: ["M", "T", "W", "T", "F", "S", "S"],
+                labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
                 datasets: [{
                     label: "Sales",
                     tension: 0.4,
@@ -577,7 +577,7 @@
                     borderRadius: 4,
                     borderSkipped: false,
                     backgroundColor: "rgba(255, 255, 255, .8)",
-                    data: [50, 20, 10, 22, 50, 10, 40],
+                    data: @json($monthlySalesData),
                     maxBarThickness: 6
                 }, ],
             },

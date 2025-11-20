@@ -26,6 +26,19 @@ class ClientBooking extends Component
     public $makeup;
     public $hair;
     
+    public $consent;
+
+    protected $rules = [
+        'name' => 'required',
+        'phone' => 'required|digits:10',
+        'email' => 'required|email',
+        'venue' => 'required',
+        'package' => 'required',
+        'scheduleDate' => 'required|date|after_or_equal:today',
+        'time' => 'required',
+        'consent' => 'accepted',
+    ];
+
     public function mount()
     {
         if (session()->has('bookingStatus')) {
@@ -35,6 +48,8 @@ class ClientBooking extends Component
     
     public function save()
     {
+        $this->validate();
+
         $this->logInfo('Client booking started', [
             'email' => $this->email,
             'phone' => $this->phone,
