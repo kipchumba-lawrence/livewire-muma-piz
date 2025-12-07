@@ -46,6 +46,18 @@
                     @if ($pipeline->makeup == null && $pipeline->outfit == null && $pipeline->hair == null)
                         No additions
                     @endif
+                    <h5>Booking Type</h5>
+                    @if ($pipeline->venue === 'walkin')
+                        <span class="badge badge-pill bg-gradient-info">Walk-in</span>
+                    @else
+                        <span class="badge badge-pill bg-gradient-primary">Scheduled</span>
+                    @endif
+                    <h5>Social Media Consent</h5>
+                    @if ($pipeline->social_consent)
+                        <span class="badge badge-pill bg-gradient-success">Consented</span>
+                    @else
+                        <span class="badge badge-pill bg-gradient-secondary">Not Consented</span>
+                    @endif
                     <h5>Shooting Status</h5>
                     @if ($pipeline->shoot_status == 'completed')
                         <span class="badge badge-pill bg-gradient-success">Complete</span>

@@ -36,7 +36,8 @@ class pipeline extends Model
         'outfit',
         'makeup',
         'redit',
-        'reditails'
+        'reditails',
+        'social_consent'
     ];
 
     /**

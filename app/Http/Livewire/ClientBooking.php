@@ -26,7 +26,7 @@ class ClientBooking extends Component
     public $makeup;
     public $hair;
     
-    public $consent;
+    public $socialConsent = false;
 
     protected $rules = [
         'name' => 'required',
@@ -36,7 +36,6 @@ class ClientBooking extends Component
         'package' => 'required',
         'scheduleDate' => 'required|date|after_or_equal:today',
         'time' => 'required',
-        'consent' => 'accepted',
     ];
 
     public function mount()
@@ -106,7 +105,8 @@ class ClientBooking extends Component
                 'payment_status' => 'paid', // Set as paid for walk-in bookings
                 'pipeline_status' => 'pending',
                 'shoot_status' => 'pending',
-                'editing_status' => 'pending'
+                'editing_status' => 'pending',
+                'social_consent' => $this->socialConsent ? true : false
             ]);
 
             $this->logPipelineAction('booking_created', $pipeline->id, [
@@ -115,7 +115,8 @@ class ClientBooking extends Component
                 'venue' => $this->venue,
                 'booked_time' => $this->dateTimeBooked,
                 'payment_type' => 'walk-in',
-                'amount' => $this->amount
+                'amount' => $this->amount,
+                'social_consent' => $this->socialConsent
             ]);
 
             return redirect()->route('client-booking')->with('bookingStatus', 'Booking confirmed successfully!');

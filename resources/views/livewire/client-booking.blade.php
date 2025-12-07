@@ -136,6 +136,7 @@
                                 <option value="">Select venue</option>
                                 <option value="indoor">Indoor</option>
                                 <option value="outdoor">Outdoor</option>
+                                <option value="walkin">Walk-in</option>
                             </select>
                         </div>
                         <div class="mb-3 col-md-6">
@@ -179,11 +180,11 @@
                                 </div>
 
                             </div>
-                            
+
                             <div class="form-check mt-3">
-                                <input class="form-check-input" type="checkbox" value="" id="consentCheck" wire:model="consent" required>
-                                <label class="form-check-label" for="consentCheck">
-                                    I agree to the company sharing the photos taken on our platforms.
+                                <input class="form-check-input" type="checkbox" id="socialConsentCheck" wire:model="socialConsent">
+                                <label class="form-check-label" for="socialConsentCheck">
+                                    I consent to my photos being shared on the company's social media platforms (optional)
                                 </label>
                             </div>
                             <button type="submit" class="btn m-3 bg-gradient-dark">Book!</button>
