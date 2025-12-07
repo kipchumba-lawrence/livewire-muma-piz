@@ -50,7 +50,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['daily', 'slack'],
             'ignore_exceptions' => false,
         ],
 
@@ -65,6 +65,29 @@ return [
             'path' => storage_path('logs/laravel.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => 14,
+            'permission' => 0664,
+        ],
+        
+        // Custom channels for different concerns
+        'mpesa' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/mpesa.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+        ],
+        
+        'pipeline' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/pipeline.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => 30,
+        ],
+        
+        'user_activity' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/user-activity.log'),
+            'level' => 'info',
+            'days' => 60,
         ],
 
         'slack' => [
