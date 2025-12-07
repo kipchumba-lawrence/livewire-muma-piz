@@ -33,6 +33,14 @@
                     // Display the human-readable difference
                     echo $bookedTime->diffForHumans();
                     ?></span>
+                    <div class="mt-2">
+                        @if ($pipeline->venue === 'walkin')
+                            <span class="badge badge-sm bg-gradient-info">Walk-in</span>
+                        @endif
+                        @if ($pipeline->social_consent)
+                            <span class="badge badge-sm bg-gradient-success">Social OK</span>
+                        @endif
+                    </div>
 
                     <div class="d-flex justify-content-end">
                         <span class="text-xxs text-end">click to view details</span>
