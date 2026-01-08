@@ -45,16 +45,43 @@ class ClientBooking extends Component
         }
     }
     
+
+    public function payment()
+    {
+        $response = Mpesa::stkpush($this->phone, 1, '4122547', 'https://mumaapix.com/api/payment');
+        // $response = Mpesa::stkpush($this->phone, 1, '4122547', 'https://test.preshamafeedsltd.com/api/payment');
+        $response = json_decode((string)$response, true);
+        pipeline::create([
+            'customer_name' => $this->name,
+            'phone' => $this->phone,
+            'venue' => $this->venue,
+            'email' => $this->email,
+            'package' => $this->package,
+            'booked_time' => $this->dateTimeBooked,
+            'note' => $this->note,
+            'makeup' => $this->makeup,
+            'hair' => $this->hair,
+            'outfit' => $this->outfit,
+            'paid_amount' => $this->amount,
+            'merchant_request_id' =>  $response['MerchantRequestID'],
+            'checkout_request_id' =>  $response['CheckoutRequestID']
+        ]);
+        return redirect()->route('client-booking')->with('paymentStatus', 'Pending Payment Confirmation.');
+    }
+
+
     public function save()
     {
+        
         $this->validate();
-
+        $this->payment();
         $this->logInfo('Client booking started', [
             'email' => $this->email,
             'phone' => $this->phone,
             'package' => $this->package,
             'venue' => $this->venue
         ]);
+        
 
         try {
             $this->dateTimeBooked = Carbon::parse("{$this->scheduleDate} {$this->time}");
@@ -67,7 +94,7 @@ class ClientBooking extends Component
             }
 
             // Create booking (walk-in, no payment processing)
-            $this->createBooking();
+            // $this->createBooking();
             $this->bookingStatus = "Booking Confirmed";
 
             $this->logInfo('Client booking completed successfully', [
