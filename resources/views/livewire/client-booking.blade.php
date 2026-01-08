@@ -67,6 +67,26 @@
                     </button>
                 </div>
             @endif
+
+            @if (session()->has('paymentStatus'))
+                <div class="alert alert-info alert-dismissible text-white fade show my-3" role="alert">
+                    <span class="alert-icon"><i class="ni ni-bell-55"></i></span>
+                    <span class="alert-text"><strong>M-Pesa Payment!</strong> {{ session('paymentStatus') }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
+
+            @if (session()->has('error'))
+                <div class="alert alert-danger alert-dismissible text-white fade show my-3" role="alert">
+                    <span class="alert-icon"><i class="ni ni-fat-remove"></i></span>
+                    <span class="alert-text"><strong>Error!</strong> {{ session('error') }}</span>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            @endif
             <div class="card-body p-3">
                 <div class="row mb-5">
                     <div class="col-12">

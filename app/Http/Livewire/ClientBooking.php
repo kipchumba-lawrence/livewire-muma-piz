@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Livewire\Component;
 use App\Models\pipeline;
 use App\Traits\Loggable;
+use Iankumu\Mpesa\Facades\Mpesa;
 
 class ClientBooking extends Component
 {
@@ -44,46 +45,109 @@ class ClientBooking extends Component
             $this->bookingStatus = session('bookingStatus');
         }
     }
-    
+
+    /**
+     * Format phone number for M-Pesa (convert 07XX to 2547XX format)
+     */
+    protected function formatPhoneForMpesa(string $phone): string
+    {
+        // Remove any spaces or special characters
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+        
+        // If starts with 0, replace with 254
+        if (str_starts_with($phone, '0')) {
+            $phone = '254' . substr($phone, 1);
+        }
+        
+        // If doesn't start with 254, add it
+        if (!str_starts_with($phone, '254')) {
+            $phone = '254' . $phone;
+        }
+        
+        return $phone;
+    }
 
     public function payment()
     {
-        $response = Mpesa::stkpush($this->phone, 1, '4122547', 'https://mumaapix.com/api/payment');
-        // $response = Mpesa::stkpush($this->phone, 1, '4122547', 'https://test.preshamafeedsltd.com/api/payment');
-        $response = json_decode((string)$response, true);
-        pipeline::create([
-            'customer_name' => $this->name,
-            'phone' => $this->phone,
-            'venue' => $this->venue,
-            'email' => $this->email,
-            'package' => $this->package,
-            'booked_time' => $this->dateTimeBooked,
-            'note' => $this->note,
-            'makeup' => $this->makeup,
-            'hair' => $this->hair,
-            'outfit' => $this->outfit,
-            'paid_amount' => $this->amount,
-            'merchant_request_id' =>  $response['MerchantRequestID'],
-            'checkout_request_id' =>  $response['CheckoutRequestID']
+        $formattedPhone = $this->formatPhoneForMpesa($this->phone);
+        
+        $this->logMpesaTransaction('stk_push_initiated', [
+            'phone' => $formattedPhone,
+            'amount' => $this->amount,
+            'account_reference' => '4122547'
         ]);
-        return redirect()->route('client-booking')->with('paymentStatus', 'Pending Payment Confirmation.');
+
+        try {
+            $response = Mpesa::stkpush($formattedPhone, $this->amount, '4122547', 'https://mumaapix.com/api/payment');
+            $response = json_decode((string)$response, true);
+
+            // Check if STK push was successful
+            if (!isset($response['MerchantRequestID']) || !isset($response['CheckoutRequestID'])) {
+                $this->logMpesaTransaction('stk_push_failed', [
+                    'phone' => $formattedPhone,
+                    'response' => $response
+                ]);
+                
+                session()->flash('error', 'Failed to initiate M-Pesa payment. Please try again.');
+                return;
+            }
+
+            // Create the booking record with payment pending
+            pipeline::create([
+                'customer_name' => $this->name,
+                'phone' => $this->phone,
+                'venue' => $this->venue,
+                'email' => $this->email,
+                'package' => $this->package,
+                'booked_time' => $this->dateTimeBooked,
+                'note' => $this->note,
+                'makeup' => $this->makeup,
+                'hair' => $this->hair,
+                'outfit' => $this->outfit,
+                'paid_amount' => $this->amount,
+                'total_amount' => $this->amount,
+                'payment_status' => 'pending',
+                'pipeline_status' => 'pending',
+                'shoot_status' => 'pending',
+                'editing_status' => 'pending',
+                'social_consent' => $this->socialConsent ? true : false,
+                'merchant_request_id' => $response['MerchantRequestID'],
+                'checkout_request_id' => $response['CheckoutRequestID']
+            ]);
+
+            $this->logMpesaTransaction('stk_push_success', [
+                'phone' => $formattedPhone,
+                'merchant_request_id' => $response['MerchantRequestID'],
+                'checkout_request_id' => $response['CheckoutRequestID']
+            ]);
+
+            return redirect()->route('client-booking')->with('paymentStatus', 'Payment prompt sent! Please check your phone and enter your M-Pesa PIN.');
+
+        } catch (\Exception $e) {
+            $this->logMpesaTransaction('stk_push_error', [
+                'phone' => $formattedPhone,
+                'error' => $e->getMessage()
+            ]);
+            
+            session()->flash('error', 'M-Pesa service error: ' . $e->getMessage());
+            return;
+        }
     }
 
 
     public function save()
     {
-        
         $this->validate();
-        $this->payment();
+
         $this->logInfo('Client booking started', [
             'email' => $this->email,
             'phone' => $this->phone,
             'package' => $this->package,
             'venue' => $this->venue
         ]);
-        
 
         try {
+            // Calculate dateTimeBooked and amount BEFORE calling payment
             $this->dateTimeBooked = Carbon::parse("{$this->scheduleDate} {$this->time}");
 
             // Calculate amount based on venue
@@ -93,15 +157,9 @@ class ClientBooking extends Component
                 $this->amount = 2;
             }
 
-            // Create booking (walk-in, no payment processing)
-            // $this->createBooking();
-            $this->bookingStatus = "Booking Confirmed";
+            // Now initiate payment with the calculated values
+            return $this->payment();
 
-            $this->logInfo('Client booking completed successfully', [
-                'email' => $this->email,
-                'amount' => $this->amount,
-                'type' => 'walk-in'
-            ]);
         } catch (\Exception $e) {
             $this->logError('Client booking failed', [
                 'email' => $this->email,
@@ -109,7 +167,7 @@ class ClientBooking extends Component
                 'trace' => $e->getTraceAsString()
             ]);
             
-            throw $e;
+            session()->flash('error', 'Booking failed: ' . $e->getMessage());
         }
     }
     
