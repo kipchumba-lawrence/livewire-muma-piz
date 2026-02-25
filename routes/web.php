@@ -43,8 +43,7 @@ use App\Http\Livewire\ExampleLaravel\UserManagement;
 Route::get('/', function () {
     return redirect('sign-in');
 });
-// M-Pesa payment route - temporarily disabled (under maintenance)
-// Route::get('/payment', [payment::class, 'stkPush'])->name('payment');
+Route::post('/payment/stk-push', [payment::class, 'stkPush'])->name('payment.stk-push');
 
 Route::get('forgot-password', ForgotPassword::class)->middleware('guest')->name('password.forgot');
 Route::get('reset-password/{id}', ResetPassword::class)->middleware('signed')->name('reset-password');

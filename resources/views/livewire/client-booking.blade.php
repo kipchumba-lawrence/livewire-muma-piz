@@ -59,9 +59,38 @@
                 </div>
             </div>
             @if ($bookingStatus != null)
-                <div class="alert alert-success alert-dismissible text-white fade show my-3" role="alert">
-                    <span class="alert-icon"><i class="ni ni-like-2"></i></span>
-                    <span class="alert-text"><strong>Success!</strong> {{ $bookingStatus }}</span>
+                @if ($paymentStatus === 'pending')
+                    <div class="alert alert-warning alert-dismissible text-white fade show my-3" role="alert">
+                        <span class="alert-text">
+                            <strong><i class="material-icons text-sm">phone_android</i> Payment Prompt Sent!</strong>
+                            {{ $bookingStatus }}
+                        </span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @elseif ($paymentStatus === 'failed' || $paymentStatus === 'error')
+                    <div class="alert alert-danger alert-dismissible text-white fade show my-3" role="alert">
+                        <span class="alert-text">
+                            <strong><i class="material-icons text-sm">error</i> Payment Issue:</strong>
+                            {{ $bookingStatus }}
+                        </span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @else
+                    <div class="alert alert-success alert-dismissible text-white fade show my-3" role="alert">
+                        <span class="alert-text"><strong>Success!</strong> {{ $bookingStatus }}</span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                @endif
+            @endif
+            @if (session()->has('bookingError'))
+                <div class="alert alert-danger alert-dismissible text-white fade show my-3" role="alert">
+                    <span class="alert-text"><strong>Error:</strong> {{ session('bookingError') }}</span>
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
